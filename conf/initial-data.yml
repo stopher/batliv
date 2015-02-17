@@ -1,0 +1,39 @@
+# Boats
+
+boats:
+
+    - &boat1 !!models.Boat
+        latitude:       58.069
+        longitude:      7.993
+        description:    Vikkilen 22
+        name:           Christopher Olaussen
+        type:           Tresjekte
+        telephone:      45434194
+        
+    - !!models.Boat
+        latitude:       58.169
+        longitude:      7.993
+        description:    Tromøy 23
+        name:           Bernt Jensen
+        type:           Cabin cruiser
+        telephone:      33221122        
+        
+history:
+
+    - !!models.History
+        latitude:       58.069
+        longitude:      7.993
+        boat:           *boat1
+        created:        2014-11-18
+
+    - !!models.History
+        latitude:       58.059
+        longitude:      7.943
+        boat:           *boat1
+        created:        2014-10-18
+
+    - !!models.History
+        latitude:       58.009
+        longitude:      7.903
+        boat:           *boat1
+        created:        2013-11-18        

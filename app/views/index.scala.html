@@ -1,0 +1,214 @@
+@(message: String)
+
+@main("Welcome to Play") {
+
+    <nav class="light-blue lighten-1" role="navigation">
+    <div class="container">
+      <div class="nav-wrapper"><a id="logo-container" href="#" class="brand-logo">Båter</a>
+
+      <ul id="slide-out" class="side-nav right">
+        <li class="kart active mmbtn"><a href="#" ><i class="mdi-maps-navigation left"></i>Sjøkart</a></li>
+      <!--        
+        <li class="mmbtn"><a href="#" ><i class="mdi-communication-chat left"></i>Chat</a></li>
+        <li class="mmbtn"><a href="#"><i class="mdi-social-people left"></i>Venner</a></li>
+      -->
+        <li class="minbaat mmbtn"><a href="#"><i class="mdi-maps-directions-ferry left"></i>Min båt</a></li>
+      </ul>
+
+      <a href="#" data-activates="slide-out" class="button-collapse"><i class="mdi-navigation-menu"></i></a>
+      </div>
+    </div>
+  </nav>
+
+    <div class="section no-pad-bot overmap" id="index-banner" >
+        <div class="custom-popup" id="map1" class="page center"></div>
+        <div id="accountpage" class="page right">            
+
+          <div class="container">
+            <h4>Min båt</h4>
+    <div class="row">
+      <form class="col s12">
+        <div class="row">
+          <div class="input-field col s12">
+            <i class="mdi-action-account-circle prefix"></i>
+            <input id="yourname" type="text" class="validate">
+            <label for="yourname">Ditt navn</label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="input-field col s12">
+            <i class="mdi-communication-phone prefix"></i>
+            <input id="yourtelephone" type="tel" class="validate">
+            <label for="yourtelephone">Telefon</label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="input-field col s12">
+            <i class="mdi-action-account-circle prefix"></i>
+            <input id="yourdescription" type="text" class="validate">
+            <label for="yourdescription">Båt beskrivelse</label>
+          </div>
+        </div>
+        <div class="row">          
+              <label style="display:block" for="yourtype">Båttype</label>              
+          <div class="input-field col s12">      
+              <select name="yourtype" id="yourtype" class="browser-default">
+                <option value="" disabled selected>Velg båttype</option>
+                <option value="1">Tresjekte</option>
+                <option value="2">Seilbåt</option>
+                <option value="3">Daycruiser</option>
+              </select>
+          </div>
+        </div>        
+      </form>
+    </div>  
+
+    <div class="action-bar">
+      <a href="#" class="baatok waves-effect waves-light btn modal-action  green lighten-1"><i class="large mdi-action-done left"></i>Lagre</a>
+    </div>
+
+
+
+    <div class="fixed-action-btn" >
+        <a class="findme btn-floating btn-large waves-effect waves-light amber lighten-1"><i class="mdi-device-gps-fixed" ></i></a>
+     </div>
+          </div>
+
+  
+        </div>        
+    </div>
+
+  <footer class="page-footer white">
+    
+    <div class="footer-copyright">
+      <div class="container">
+      </div>
+    </div>
+  </footer>    
+
+  <div class="loader">
+   <div class="preloader-wrapper active">
+        <div class="spinner-layer spinner-blue">
+          <div class="circle-clipper left">
+            <div class="circle"></div>
+          </div><div class="gap-patch">
+            <div class="circle"></div>
+          </div><div class="circle-clipper right">
+            <div class="circle"></div>
+          </div>
+        </div>
+
+        <div class="spinner-layer spinner-red">
+          <div class="circle-clipper left">
+            <div class="circle"></div>
+          </div><div class="gap-patch">
+            <div class="circle"></div>
+          </div><div class="circle-clipper right">
+            <div class="circle"></div>
+          </div>
+        </div>
+
+        <div class="spinner-layer spinner-yellow">
+          <div class="circle-clipper left">
+            <div class="circle"></div>
+          </div><div class="gap-patch">
+            <div class="circle"></div>
+          </div><div class="circle-clipper right">
+            <div class="circle"></div>
+          </div>
+        </div>
+
+        <div class="spinner-layer spinner-green">
+          <div class="circle-clipper left">
+            <div class="circle"></div>
+          </div><div class="gap-patch">
+            <div class="circle"></div>
+          </div><div class="circle-clipper right">
+            <div class="circle"></div>
+          </div>
+        </div>
+      </div>
+  </div> 
+
+  <!-- Modal Structure -->
+  <div id="modalChat" class="modal scrollable">
+    <h4>Chat</h4>
+    <p>Dette er et eksempel</p>
+    <div class="action-bar">
+      <a href="#" class="waves-effect waves-green btn-flat modal-action modal-close">Lukk</a>
+    </div>
+  </div>
+
+  <!-- Modal Structure -->
+  <div id="modalFriends" class="modal scrollable">
+    <h4>Venner</h4>
+    <ul class="collapsible" data-collapsible="accordion">
+    <li>
+      <div class="collapsible-header offline"><i class="mdi-communication-location-off"></i>Jens Jensen</div>
+      <div class="collapsible-body"><p>Lorem ipsum dolor sit amet.</p>
+
+      </div>
+    </li>
+    <li>
+      <div class="collapsible-header online"><i class="mdi-communication-location-on"></i>Per Jonasen</div>
+      <div class="collapsible-body"><p>Lorem ipsum dolor sit amet.</p></div>
+    </li>
+    <li>
+      <div class="collapsible-header online"><i class="mdi-communication-location-on"></i>Geir Bårdsen</div>
+      <div class="collapsible-body"><p>Lorem ipsum dolor sit amet.      </p>
+        <p><a class="btn-floating btn-large waves-effect waves-light blue locateboat"><i class="mdi-device-location-searching"></i></a></p></div>
+    </li>
+  </ul>
+    <div class="action-bar">
+      <a href="#" class="waves-effect waves-green btn-flat modal-action modal-close">Lukk</a>
+    </div>
+  </div>
+
+
+<script id="entry-template" type="text/x-handlebars-template">
+
+  <div class="boatdesc" data-id="{{id}}">
+    <div class="">
+        <div class="">
+          <h6 class="title">{{title}}</h6>
+          <p>Breddegrad: {{lat}}</p>
+          <p>Lengdegrad: {{lng}}</p>
+          <p class="desc">{{description}}</p>
+        </div>
+
+      <div class="row">
+        
+        <div class="col s6">
+
+        </div>
+        <div class="col s6">
+
+        </div>
+      </div>
+      
+   
+    <div class="fixed-action-btn" style="top: 10px; right: 10px;position:absolute">
+      <a href="tel:{{telephone}}" class="show-history btn-floating btn-large cyan" data-id="{{id}}">
+        <i class="mdi-communication-call"></i>
+      </a>
+    </div>
+
+
+    </div>
+  </div>
+</script>
+
+    <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script type="text/javascript" src="@routes.Assets.at("stylesheets/materialize/js/materialize.min.js")"></script>
+    <script type="text/javascript" src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet-src.js"></script>
+    <script type="text/javascript" src="@routes.Assets.at("javascripts/leaflet.markercluster-src.js")"></script>
+    <script type="text/javascript" src="@routes.Assets.at("javascripts/handlebars-v3.0.0.js")"></script>    
+    <script type="text/javascript" src="@routes.Assets.at("javascripts/fastclick.js")"></script>    
+    <script type="text/javascript" src="@routes.Assets.at("javascripts/hashmap.js")"></script>    
+    <script type="text/javascript" src="@routes.Assets.at("javascripts/Datastore.js")"></script>
+    <script type="text/javascript" src="@routes.Assets.at("javascripts/Map.js")"></script>
+    <script type="text/javascript" src="@routes.Assets.at("javascripts/Gui.js")"></script>
+    <script type="text/javascript" src="@routes.Assets.at("javascripts/main.js")"></script>
+
+
+}
