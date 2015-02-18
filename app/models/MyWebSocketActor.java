@@ -1,9 +1,11 @@
 package models;
 
+import com.fasterxml.jackson.databind.JsonNode;
+
 import akka.actor.*;
 
 public class MyWebSocketActor extends UntypedActor {
-
+	
     public static Props props(ActorRef out) {
         return Props.create(MyWebSocketActor.class, out);
     }
@@ -15,8 +17,9 @@ public class MyWebSocketActor extends UntypedActor {
     }
 
     public void onReceive(Object message) throws Exception {
-        if (message instanceof String) {
-            out.tell("I received your message: " + message, self());
+        if (message instanceof JsonNode) {
+        	JsonNode node = (JsonNode) message;
+            out.tell("I received your message: " + node.toString(), self());          
         }
     }
 }

@@ -1,8 +1,12 @@
 package controllers;
 
+import java.time.LocalDateTime;
+import java.util.Calendar;
 import java.util.List;
+import java.util.stream.StreamSupport;
 
 import models.Boat;
+import models.ChatRoom;
 import models.History;
 import play.*;
 import play.mvc.*;
@@ -40,27 +44,42 @@ public class Application extends Controller {
         return ok(index.render("Your new application is ready."));
     }
     
-    public static WebSocket<String> pingWs() {
+    /*
+    public static WebSocket<JsonNode> pingWs() {    
     	
     	return WebSocket.withActor(MyWebSocketActor::props);
     }
+    */
     
-    public static WebSocket<String> socket() {
+    public static WebSocket<JsonNode> socket() {
     	
         return WebSocket.whenReady((in, out) -> {
+        	
+        	ChatRoom.connections.add(out);
+        	
             // For each event received on the socket,
             //in.onMessage(System.out::println);
-            in.onMessage((String s) -> {
-            	JsonNode node = Json.parse(s);            	
-            	System.out.println(s); 
-            	
+            in.onMessage((json) -> {
+            	Logger.debug(json.toString());
+            	ChatRoom.connections.forEach(conn -> {                        	
+            		conn.write(json);
+            	});
             });
                         
             // When the socket is closed.
-            in.onClose(() -> System.out.println("Disconnected"));
+            in.onClose(() -> {
+            	Logger.debug("Disconnected websocket client");
+            	ChatRoom.connections.remove(out);
+            });
 
             // Send a single 'Hello!' message
-            out.write("Hello!");
+            ObjectNode joinMessage = Json.newObject();
+            joinMessage.put("type", "join");
+            joinMessage.put("created", ISO8601DateParser.toString(Calendar.getInstance().getTime()));
+            
+        	ChatRoom.connections.forEach(conn -> {            		
+        		conn.write(joinMessage);
+        	});
         });
     }
 
@@ -97,8 +116,7 @@ public class Application extends Controller {
     		Double lat = json.findPath("latitude").doubleValue();
     		Double lng = json.findPath("longitude").doubleValue();
     		Long id = json.findPath("id").longValue();
-    		
-    		
+    			
     		Boat b = null;
     		if(id == null) {
     			b = new Boat();

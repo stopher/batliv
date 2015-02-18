@@ -33,6 +33,12 @@ public class ApplicationTest {
         int a = 1 + 1;
         assertThat(a).isEqualTo(2);
     }
+    
+    @Test
+    public void simpleCheck2() {
+        int a = 1 + 3;
+        assertThat(a).isEqualTo(2);
+    }
 
     @Test
     public void renderTemplate() {

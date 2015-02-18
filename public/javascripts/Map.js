@@ -7,6 +7,7 @@ var Map = (function(){
 	historyLines = new HashMap(),
 	boatIcon = {},
 	myIcon = {},
+	selfMarker =null,
 	me = {};
 
 	me.boatToBox = function (boat) {
@@ -23,25 +24,36 @@ var Map = (function(){
     },
 
    	me.updateBoat = function (id) {  
-   		var boat = Datastore.getBoat(id); 		
+    	Gui.log(id);
+   		var boat = Datastore.getBoat(id);
+   		Gui.log(boat);
       	var html = this.boatToBox(boat);
-
+      	
       	var ref = boatRefs.get(id);
+      	Gui.log(ref);
+      	
         ref.bindPopup(html, {closeButton:false});
-        ref.update();      
+        ref.update();
     },
-
 
     me.showHistory = function(marker) {
     	var id = marker.id;
+    	
+    	if(!id){
+    		return;
+    	}
+    	
         var doneCallback = function(response) {
         	var history = $.map(response, function(val, i) {
             	console.log(val.latitude+"-"+val.longitude);
         		return [[val.latitude, val.longitude]];
         	});
         	if(history.length) {
-        		var polyline = L.polyline(history, {color: '#03f', opacity: 0.5, dashArray: '5, 10'}).addTo(map);
-        		historyLines.set(id, polyline);
+        		
+        		if(!historyLines.has(id)) {        			
+        			var polyline = L.polyline(history, {color: '#03f', opacity: 0.5, dashArray: '5, 10'}).addTo(map);
+        			historyLines.set(id, polyline);
+        		}        		
         	}
         };
         Datastore.fetchHistoryForBoat(id, doneCallback);
@@ -58,7 +70,7 @@ var Map = (function(){
         marker.id = boat.id;
         var html = Map.boatToBox(boat);
         marker.bindPopup(html, {closeButton:false});
-        boatRefs.set(boat.id,marker);
+        boatRefs.set(boat.id, marker);
         markers.addLayer(marker);
     },
 
@@ -71,29 +83,19 @@ var Map = (function(){
       		var myBoat = Datastore.getMyBoat();
       		var boats = Datastore.getBoats();
 
-			var radius = e.accuracy / 2;
-			myBoat.latitude = e.latitude;
-			myBoat.longitude = e.longitude;
-
-			//L.marker(e.latlng).addTo(map).bindPopup("You are within " + radius + " meters from this point").openPopup();
-
-			// only add if not exists
-			if(!markers.hasLayer(boatRefs.get(myBoat.id))) {
-				
-				var marker = L.marker(new L.LatLng(myBoat.latitude, myBoat.longitude), { icon: myIcon, title: myBoat.name });
-				marker.id = myBoat.id;
-				//var circleMarker = L.circle(new L.LatLng(myBoat.lat, myBoat.lng), 100);
-				//var group = L.layerGroup([marker, circleMarker]);
-				var html = me.boatToBox(myBoat);
-				marker.bindPopup(html, {closeButton:false});
-
-				boats.set(myBoat.id, myBoat);
-				boatRefs.set(myBoat.id, marker);
-				markers.addLayer(marker);	
-				
-			} else {
-				boatRefs.get(myBoat.id).setLatLng([myBoat.latitude,myBoat.longitude]).update();
-			}
+      		// if changed
+      		if(myBoat.latitude != e.latitude
+      				|| myBoat.longitude != e.longitude) {
+      		
+      			var radius = e.accuracy / 2;
+      			myBoat.latitude = e.latitude;
+      			myBoat.longitude = e.longitude;
+      			
+      			if(markers.hasLayer(boatRefs.get(myBoat.id))) {
+      				boatRefs.get(myBoat.id).setLatLng([myBoat.latitude,myBoat.longitude]).update();				
+      				Datastore.updatePosition();
+      			}
+      		}
 		}
 
 		map.on('locationfound', onLocationFound);
@@ -150,10 +152,8 @@ var Map = (function(){
         	var marker = e.popup._source;
         	me.showHistory(marker);
         });
-        
-        
+                
         map.attributionControl.setPrefix('');
-
         Datastore.fetchBoats();
 	}
 

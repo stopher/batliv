@@ -19,6 +19,11 @@ var Gui = (function(){
 	me.hideLoader = function() {
 		$(".loader").hide();
 	},
+	me.log = function(text) {
+		if (typeof console == "object") {
+			console.log(text);
+		}
+	},
 	me.init = function() {
 		$(".button-collapse").sideNav({edge: 'left'});
 		$('.modal-trigger').leanModal({
@@ -87,7 +92,10 @@ var Gui = (function(){
 		    
 		    
 		    $("#yourtype option[selected]").removeAttr("selected");
-		    $("#yourtype option[value="+myBoat.type+"]").attr("selected", "selected");
+		    
+		    if(myBoat.type) {		    	
+		    	$("#yourtype option[value="+myBoat.type+"]").attr("selected", "selected");
+		    }
 
 		  });
 	};
