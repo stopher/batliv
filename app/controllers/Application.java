@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.stream.StreamSupport;
 
 import models.Boat;
+import models.ChatMessage;
 import models.ChatRoom;
 import models.History;
 import play.*;
@@ -34,6 +35,10 @@ public class Application extends Controller {
 		return ok("");
 	}
 	
+	public static Result getSupport() {		
+		return ok(support.render(""));
+	}
+	
 	// serves crossdomain.xml
 	public static Result crossdomain() {
 		response().setContentType("application/xml");
@@ -41,6 +46,7 @@ public class Application extends Controller {
 	}
 	
     public static Result index() {
+    	Play.isDev();
         return ok(index.render("Your new application is ready."));
     }
     
@@ -146,7 +152,24 @@ public class Application extends Controller {
     		}
     	}
     }
+    
+    public static Result getChat() {
+    	
+    	
+    	ArrayNode arrayNode = Json.newObject().arrayNode();
+    	
+    	List<ChatMessage> chatMessages = ChatMessage.find.orderBy("created desc").setMaxRows(100).findList();
+    	
+    	for(ChatMessage h : chatMessages) {
+        	ObjectNode msg= Json.newObject();        	
+        	msg.put("user", h.getUser());
+        	msg.put("message", h.getMessage());
+        	msg.put("created", ISO8601DateParser.toString(h.getCreated()));
+        	arrayNode.add(msg);    		
+    	}
 
+    	return ok(arrayNode);
+    }
     
     public static Result getHistory(Long id) {
     	
@@ -185,7 +208,7 @@ public class Application extends Controller {
         	boat.put("id", b.getId());        	
         	arrayNode.add(boat);    		
     	}
-
+    	
     	return ok(arrayNode);
     }
     
@@ -217,8 +240,7 @@ public class Application extends Controller {
 		Double northwestLng = json.findPath("northwestLng").doubleValue();
     	Double southeastLat = json.findPath("southeastLat").doubleValue();
 		Double southeastLng = json.findPath("southeastLng").doubleValue();
-	
-		
+			
 		if(northwestLat == null
 				||northwestLng == null
 				|| southeastLat == null

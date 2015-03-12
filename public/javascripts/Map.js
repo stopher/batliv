@@ -91,11 +91,13 @@ var Map = (function(){
       			myBoat.latitude = e.latitude;
       			myBoat.longitude = e.longitude;
       			
-      			if(markers.hasLayer(boatRefs.get(myBoat.id))) {
-      				boatRefs.get(myBoat.id).setLatLng([myBoat.latitude,myBoat.longitude]).update();				
+      			if(markers.hasLayer(boatRefs.get(myBoat.id))) {      						
       				Datastore.updatePosition();
       			}
       		}
+  			if(markers.hasLayer(boatRefs.get(myBoat.id))) {
+  				boatRefs.get(myBoat.id).setLatLng([myBoat.latitude,myBoat.longitude]).update();				  			
+  			}
 		}
 
 		map.on('locationfound', onLocationFound);

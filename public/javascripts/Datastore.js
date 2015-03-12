@@ -10,14 +10,15 @@ var Datastore = (function(){
         longitude: 7.993		
 	},
 	boats = new HashMap(),
-	BASE_URL = "http://10.0.0.9:9000/",
+	BASE_URL = "http://"+APP_HOST+"/",
 	settings =  {
     
 		NEW_BOAT_URL : BASE_URL+'boat',
 		FETCH_BOATS_URL : BASE_URL+'boats',
-    FETCH_AREA_URL : BASE_URL+'area',
-    FETCH_HISTORY_URL : BASE_URL+'history',
-    UPDATE_POSITION_URL : BASE_URL+'position'
+	    FETCH_AREA_URL : BASE_URL+'area',
+	    FETCH_HISTORY_URL : BASE_URL+'history',
+	    UPDATE_POSITION_URL : BASE_URL+'position',
+	    FETCH_CHAT_URL : BASE_URL+'chat'
 	},
 	doRequest = function(url, type, data, doneCallback, toastmessage) {
 	    var xhr = $.ajax({
@@ -108,12 +109,7 @@ var Datastore = (function(){
 	    doRequest(settings.NEW_BOAT_URL, "POST", myBoat, doneCallback, "Saved boat");
 	},
 	me.getUpdatesPeriodically = function() {
-	  setInterval(me.fetchBoatsInArea, 60000);
-	  
-	  setInterval(function() {
-		  Map.locate(false);
-	  }, 60000);
-	  
+	  setInterval(me.fetchBoatsInArea, 60000);  
 	},
 	me.fetchBoatsInArea = function ( ) {
 	    Gui.log("fetching boats in area");
@@ -147,9 +143,18 @@ var Datastore = (function(){
 	        boats.set(boat.id, boat);
 	        Map.addBoat(boat);
 	      }
-	      Map.locate(true);
+	      //Map.locate(true);
 	    };
-	    doRequest(settings.FETCH_BOATS_URL, "GET", myBoat, doneCallback, "Loaded boats");
+	    doGetRequest(settings.FETCH_BOATS_URL, "GET", {}, doneCallback, "Loaded boats");
+  	},
+  	
+  	me.fetchChat = function () {
+  		var doneCallback = function(response) {  			 
+  	      for (var i = 0; i < response.length; i++) {
+  	    	  console.log(response[i]);
+  	      }
+  	    };
+  	    doGetRequest(settings.FETCH_CHAT_URL, "GET", {}, doneCallback, "Loaded chat");
   	},
 
   	me.init = function() {

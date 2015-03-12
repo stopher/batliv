@@ -10,6 +10,14 @@ POST    /position	            	controllers.Application.updatePosition()
 GET    	/boats                     	controllers.Application.getBoats()
 POST   	/area                     	controllers.Application.getBoatsInArea()
 GET    	/history      				controllers.Application.getHistory(id: Long)
+GET    	/chat      					controllers.Application.getChat()
+
+
+GET    	/support      				controllers.Guesser.getSupport()
+POST   	/guess                     	controllers.Guesser.newGuess()
+GET   	/player 	             	controllers.Guesser.getPlayer(uuid: String)
+GET   	/topscores                	controllers.Guesser.getTopScores()
+
 
 OPTIONS	/*url						controllers.Application.options(url)
 

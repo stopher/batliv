@@ -81,7 +81,13 @@ var Gui = (function(){
 		    $(".mmbtn").removeClass("active");
 		    $(this).addClass("active");
 		  });
-
+		  		  	
+		  $(".chat").on("click", function()  {
+			  $('.button-collapse').sideNav('hide'); 			 			  
+			  $('#modalChat').openModal();  
+			  Datastore.fetchChat();
+		  });
+		  
 		  $(".minbaat").on("click", function() {
 
 		  	var myBoat = Datastore.getMyBoat();
