@@ -15,8 +15,11 @@ GET    	/chat      					controllers.Application.getChat()
 
 GET    	/support      				controllers.Guesser.getSupport()
 POST   	/guess                     	controllers.Guesser.newGuess()
+POST   	/game                     	controllers.Guesser.newGame()
+POST   	/player                    	controllers.Guesser.updatePlayer()
 GET   	/player 	             	controllers.Guesser.getPlayer(uuid: String)
 GET   	/topscores                	controllers.Guesser.getTopScores()
+GET   	/rank 	             		controllers.Guesser.rank(score: Integer)
 
 
 OPTIONS	/*url						controllers.Application.options(url)

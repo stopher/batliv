@@ -11,6 +11,14 @@ import play.db.ebean.*;
 import play.data.format.*;
 import play.data.validation.*;
 
+/**
+ * A Guess represents one round of guessing for a player.
+ * 
+ * {@link ConcurrencyMode#NONE} disables optimistic locking.
+ * 
+ * @author Christopher Olaussen
+ *
+ */
 @Entity
 @Table(name = "tbl_guess")
 @EntityConcurrencyMode(ConcurrencyMode.NONE)
@@ -33,7 +41,7 @@ public class Guess extends Model {
 	private Integer bonusPoints;
 	
 	@ManyToOne(cascade=CascadeType.ALL)
-	private GamePlayer gameplayer;
+	private Game game;
 	
 	@Formats.DateTime(pattern = DATE_PATTERN)
 	@Column(name="created")
@@ -66,14 +74,6 @@ public class Guess extends Model {
 		this.points = points;
 	}
 
-	public GamePlayer getGameplayer() {
-		return gameplayer;
-	}
-
-	public void setGameplayer(GamePlayer gameplayer) {
-		this.gameplayer = gameplayer;
-	}
-
 	public Integer getBonusPoints() {
 		return bonusPoints;
 	}
@@ -86,12 +86,20 @@ public class Guess extends Model {
 		return bonusPoints+points;
 	}
 	
-	public static Guess findEarlierGuess(Guess thanGuess, GamePlayer belongingTo) {
-		List<Guess> findList = find.where().lt("created", thanGuess.getCreated()).eq("gameplayer", belongingTo).orderBy("created desc").setMaxRows(1).findList();
+	public static Guess findEarlierGuess(Guess thanGuess, Game belongingTo) {
+		List<Guess> findList = find.where().lt("created", thanGuess.getCreated()).eq("game", belongingTo).orderBy("created desc").setMaxRows(1).findList();
 		if(findList!=null && findList.size() > 0) {
 			return findList.get(0);
 		}
 		return null;
+	}
+
+	public Game getGame() {
+		return game;
+	}
+
+	public void setGame(Game game) {
+		this.game = game;
 	}
 	
 }

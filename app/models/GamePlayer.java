@@ -12,8 +12,16 @@ import play.data.format.*;
 import play.data.validation.*;
 import utils.Toolbox;
 
+/**
+ * GamePlayer representing a Player and his aggregated results.
+ * 
+ * {@link ConcurrencyMode#NONE} disables optimistic locking.
+ * 
+ * @author Christopher Olaussen
+ *
+ */
 @Entity
-@Table(name = "tbl_gameplayer")
+@Table(name = "tbl_gameplayer", uniqueConstraints={@UniqueConstraint(columnNames={"uuid"})})
 @EntityConcurrencyMode(ConcurrencyMode.NONE)
 public class GamePlayer extends Model {
 	
@@ -28,26 +36,17 @@ public class GamePlayer extends Model {
 	@Constraints.Required
 	@Column(name="name")
 	private String name;
-	
-	@Constraints.Required
-	@Column(name="points")
-	private Integer points;
-	
-	@Constraints.Required
-	@Column(name="wins_in_a_row")
-	private Integer winsInARow;
-	
+		
 	@Constraints.Required
 	@Column(name="uuid")
 	private String uuid;
 	
-	@OneToMany(mappedBy="gameplayer")
-	@OrderBy("created desc")  
-	private List<Guess> guesses;
-	
 	@Formats.DateTime(pattern = DATE_PATTERN)
 	@Column(name="created")
 	private Date created = new Date();
+	
+	@OneToMany(mappedBy="gamePlayer")
+	private List <Game> games;
 	
 	public static Finder<Long, GamePlayer> find = new Finder<Long, GamePlayer>(Long.class,
 			GamePlayer.class);
@@ -77,14 +76,7 @@ public class GamePlayer extends Model {
 	public void setCreated(Date created) {
 		this.created = created;
 	}
-	
-	public Integer getPoints() {
-		return points;
-	}
 
-	public void setPoints(Integer points) {
-		this.points = points;
-	}
 
 	public String getUuid() {
 		return uuid;
@@ -94,31 +86,14 @@ public class GamePlayer extends Model {
 		this.uuid = uuid;
 	}
 
-	public List<Guess> getGuesses() {
-		return guesses;
+	public List <Game> getGames() {
+		return games;
 	}
 
-	public void setGuesses(List<Guess> guesses) {
-		this.guesses = guesses;
+	public void setGames(List <Game> games) {
+		this.games = games;
 	}
 
-	public Integer getWinsInARow() {
-		return winsInARow;
-	}
-
-	public void setWinsInARow(Integer winsInARow) {
-		this.winsInARow = winsInARow;
-	}
 	
-
-	public Integer increaseWinsInArow() {
-		if(winsInARow != null && winsInARow >= 0) {
-			winsInARow = winsInARow+1;
-		}
-		if(winsInARow == null) {
-			winsInARow = 0;
-		}
-		return Toolbox.bonusPoints(winsInARow);
-	}
 	
 }
