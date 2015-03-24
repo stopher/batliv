@@ -99,9 +99,18 @@ public class Application extends Controller {
     		Double lat = json.findPath("latitude").doubleValue();
     		Double lng = json.findPath("longitude").doubleValue();
     		Boat boat = Boat.find.byId(id);
+    		
+    		History h = new History();
+    		h.setLatitude(lat);
+    		h.setLongitude(lng);
+    		
     		boat.setLatitude(lat);
     		boat.setLongitude(lng);
     		boat.save();
+    		
+    		h.setBoat(boat);
+    		h.save();
+    		
     		return ok(Json.toJson(boat).toString());
     	}
     }
@@ -154,10 +163,8 @@ public class Application extends Controller {
     }
     
     public static Result getChat() {
-    	
-    	
-    	ArrayNode arrayNode = Json.newObject().arrayNode();
-    	
+    	    	
+    	ArrayNode arrayNode = Json.newObject().arrayNode();    	
     	List<ChatMessage> chatMessages = ChatMessage.find.orderBy("created desc").setMaxRows(100).findList();
     	
     	for(ChatMessage h : chatMessages) {

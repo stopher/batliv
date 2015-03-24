@@ -93,6 +93,14 @@ public class Guess extends Model {
 		}
 		return null;
 	}
+	
+	public static Guess findLatestGuess(Game belongingTo) {
+		List<Guess> findList = find.where().eq("game", belongingTo).orderBy("created desc").setMaxRows(1).findList();
+		if(findList!=null && findList.size() > 0) {
+			return findList.get(0);
+		}
+		return null;
+	}
 
 	public Game getGame() {
 		return game;

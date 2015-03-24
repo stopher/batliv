@@ -109,8 +109,8 @@ public class Game extends Model {
 	}
 	
 	public static Integer rank(Integer score) {		
-		Integer ranking = com.avaje.ebean.Ebean.createSqlQuery("SELECT count(id) as counted FROM tbl_game where points > :pts order by points desc;").setParameter("pts", score).findUnique().getInteger("counted");		
-		return ranking+1;		
+		Integer ranking = com.avaje.ebean.Ebean.createSqlQuery("SELECT count(id) as counted FROM tbl_game where points >= :pts order by points desc;").setParameter("pts", score).findUnique().getInteger("counted");
+		return ranking;
 	}
 
 	public GamePlayer getGamePlayer() {

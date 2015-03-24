@@ -68,7 +68,6 @@ public class GamePlayer extends Model {
 		this.name = name;
 	}
 
-
 	public Date getCreated() {
 		return created;
 	}
@@ -76,7 +75,6 @@ public class GamePlayer extends Model {
 	public void setCreated(Date created) {
 		this.created = created;
 	}
-
 
 	public String getUuid() {
 		return uuid;
@@ -93,7 +91,5 @@ public class GamePlayer extends Model {
 	public void setGames(List <Game> games) {
 		this.games = games;
 	}
-
-	
 	
 }

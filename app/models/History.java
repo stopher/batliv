@@ -13,6 +13,7 @@ import javax.persistence.Table;
 
 import play.data.format.Formats;
 import play.data.validation.Constraints;
+import play.db.ebean.Model;
 import play.db.ebean.Model.Finder;
 
 import com.avaje.ebean.annotation.ConcurrencyMode;
@@ -22,7 +23,7 @@ import com.avaje.ebean.annotation.EntityConcurrencyMode;
 @Entity
 @Table(name = "tbl_history")
 @EntityConcurrencyMode(ConcurrencyMode.NONE)
-public class History {
+public class History extends Model {
 public static final String DATE_PATTERN = "yyyy-MM-dd HH:mm:ss";
 	
 	private static final long serialVersionUID = 1L;
@@ -47,8 +48,6 @@ public static final String DATE_PATTERN = "yyyy-MM-dd HH:mm:ss";
 	
 	@Formats.DateTime(pattern = DATE_PATTERN)
 	private Date created = new Date();
-	
-	
 	
 	
 	/**

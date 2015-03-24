@@ -70,7 +70,7 @@ public class Guesser extends Controller {
     	if(gamePlayer == null) {
     		gamePlayer = new GamePlayer();
 			gamePlayer.setUuid(uuid);
-			gamePlayer.setName("");				
+			gamePlayer.setName("");
     	} else {    		
     		gamePlayer.setName(name);
     	}
@@ -126,6 +126,21 @@ public class Guesser extends Controller {
     		    		
     		Game game = Game.find.where().eq("id", gameid).findUnique();    		
     		GamePlayer gamePlayer = GamePlayer.find.where().eq("uuid", uuid).findUnique();
+    		
+    		if(game == null) {
+       			return badRequest("Missing valid game");
+    		}
+    		
+    		Guess latest = Guess.findLatestGuess(game);
+    		if(latest != null) {
+    			long timeLatest = latest.getCreated().getTime();    			
+    			long now = Calendar.getInstance().getTime().getTime();
+    			long timePassed = now-timeLatest;
+    			if(timePassed < 1000) {
+    				// cheating
+    				return badRequest("You are submitting guesses too fast. Cheating reported.");
+    			}
+    		}
     		
     		Integer selectedVal = json.findPath("selectedVal").intValue();
     		Integer val2 = json.findPath("val2").intValue();
