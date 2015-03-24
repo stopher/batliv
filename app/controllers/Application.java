@@ -267,6 +267,7 @@ public class Application extends Controller {
         	boat.put("name", b.getName());
         	boat.put("telephone", b.getTelephone());
         	boat.put("description", b.getDescription());
+        	boat.put("type", b.getType());
         	boat.put("id", b.getId());        	
         	arrayNode.add(boat);    		
     	}
